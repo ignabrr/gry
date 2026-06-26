@@ -1,3 +1,5 @@
+#!pgzrun
+
 import pgzrun
 import random
 
