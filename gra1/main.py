@@ -1,4 +1,7 @@
 #!pgzrun
+# /// script
+# dependencies = ["pgzero"]
+# ///
 
 import pgzrun
 import random
