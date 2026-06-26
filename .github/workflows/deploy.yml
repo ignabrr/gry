@@ -1,0 +1,34 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - run: pip install pygbag
+
+      - name: Build all games
+        run: |
+          for dir in */; do
+            if [ -f "${dir}game.py" ]; then
+              echo "Building $dir..."
+              pygbag --build "$dir"
+            fi
+          done
+
+      - name: Copy root index.html to build
+        run: cp index.html build/ 2>/dev/null || true
+
+      - uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
