@@ -19,7 +19,7 @@ jobs:
       - name: Build all games
         run: |
           for dir in */; do
-            if [ -f "${dir}game.py" ]; then
+            if [ -f "${dir}main.py" ]; then
               echo "Building $dir..."
               pygbag --build "$dir"
             fi
