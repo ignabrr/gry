@@ -1,8 +1,4 @@
 #!pgzrun
-# /// script
-# dependencies = ["pgzero"]
-# ///
-
 import pgzrun
 import random
 
@@ -90,6 +86,3 @@ def draw():
         fontsize=70,
         shadow=(1, 1)
     )
-
-
-pgzrun.go()
