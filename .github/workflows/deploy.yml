@@ -4,6 +4,9 @@ on:
   push:
     branches: [main]
 
+permissions:
+  contents: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -16,19 +19,21 @@ jobs:
 
       - run: pip install pygbag
 
-      - name: Build all games
+      - name: Build games and assemble site
         run: |
+          mkdir -p site
+          cp index.html site/ 2>/dev/null || true
           for dir in */; do
+            name="${dir%/}"
             if [ -f "${dir}main.py" ]; then
-              echo "Building $dir..."
+              echo "Building $name..."
               pygbag --build "$dir"
+              mkdir -p "site/$name"
+              cp -r "${dir}build/web/." "site/$name/"
             fi
           done
-
-      - name: Copy root index.html to build
-        run: cp index.html build/ 2>/dev/null || true
 
       - uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
+          publish_dir: ./site
